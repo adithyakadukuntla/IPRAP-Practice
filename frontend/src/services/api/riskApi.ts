@@ -16,7 +16,7 @@ export const riskApi = {
     }
 
     const response = await apiClient.get(`/portfolios/${portfolioId}/risk`);
-    const r = response.data;
+    const r:any = response.data;
     if (!r) throw new Error('Risk data not found');
 
     return {

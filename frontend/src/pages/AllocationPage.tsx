@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAsync } from '../hooks/useAsync';
 import { allocationApi } from '../services/api/allocationApi';
@@ -9,18 +9,6 @@ import { EmptyState } from '../components/common/EmptyState';
 import { DataTable } from '../components/common/DataTable';
 import type { TableColumn } from '../components/common/DataTable';
 import { formatCurrency, formatPercentage, formatDate } from '../utils/formatters';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
 import { ArrowLeft } from 'lucide-react';
 
 interface AllocationItem {
@@ -90,7 +78,7 @@ export const AllocationPage: React.FC = () => {
     );
   }
 
-  const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+  // const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
   return (
     <div className="bg-gray-50 py-8">

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAsync } from '../hooks/useAsync';
 import { portfolioApi } from '../services/api/portfolioApi';

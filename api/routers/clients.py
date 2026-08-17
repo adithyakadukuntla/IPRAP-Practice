@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[Any])
+@router.get("", response_model=List[Any])
 def list_clients(repository: SnowflakeRepository = Depends(get_repository)):
     # If the repository provides a `get_clients` method (mock mode), use it.
     if hasattr(repository, "get_clients"):
