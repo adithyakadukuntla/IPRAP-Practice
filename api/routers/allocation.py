@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 
 from dependencies import get_repository
 from repositories.snowflake_repository import SnowflakeRepository
-from schemas.allocation import AllocationListResponse
+from schemas.allocation import AllocationListResponse, AllocationFlexibleResponse
 from services.allocation_service import AllocationService
 
 
@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.get(
     "/{portfolio_id}/allocation",
-    response_model=AllocationListResponse
+    response_model=AllocationFlexibleResponse
 )
 def get_allocation(
     portfolio_id: str,
@@ -44,8 +44,15 @@ def get_allocation(
         )
 
     service = AllocationService(repository)
-
-    return service.get_allocation(
-        portfolio_id=portfolio_id,
-        dimension=dimension,
-    )
+    try:
+        print(f"Allocation request: portfolio={portfolio_id} dimension={dimension}", flush=True)
+        result = service.get_allocation(
+            portfolio_id=portfolio_id,
+            dimension=dimension,
+        )
+        print(f"Allocation result count={len(result.get('items', [])) if isinstance(result, dict) else 'n/a'}", flush=True)
+        return result
+    except Exception as exc:
+        # Temporary debug: surface exception message in response for troubleshooting
+        print(f"Allocation error for {portfolio_id} dimension={dimension}: {exc}", flush=True)
+        raise HTTPException(status_code=500, detail={"message": str(exc)})
