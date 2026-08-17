@@ -24,3 +24,8 @@ class Allocation(BaseModel):
 class AllocationListResponse(BaseModel):
     items: List[Allocation]
     dimension: str
+
+
+class AllocationFlexibleResponse(BaseModel):
+    items: List[dict]
+    dimension: str

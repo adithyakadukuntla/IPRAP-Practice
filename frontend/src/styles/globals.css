@@ -1,0 +1,112 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Chart styles */
+.recharts-surface {
+  overflow: visible !important;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+/* Table improvements */
+table {
+  @apply w-full border-collapse;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+select:focus,
+a:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Button hover states */
+button {
+  @apply active:scale-95;
+}
+
+/* Loading skeleton */
+.skeleton {
+  @apply animate-pulse rounded bg-gray-200;
+}
+
+/* Error messages */
+.error-message {
+  @apply rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800;
+}
+
+/* Success messages */
+.success-message {
+  @apply rounded-md border border-green-200 bg-green-50 p-4 text-sm text-green-800;
+}
+
+/* Warning messages */
+.warning-message {
+  @apply rounded-md border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800;
+}

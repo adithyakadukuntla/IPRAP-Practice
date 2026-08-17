@@ -13,6 +13,7 @@ class PortfolioRisk(BaseModel):
     highest_holding_security_id: str
     highest_holding_value: float
     highest_weight_percent: float
+    
 
     concentration_risk: str
     risk_status: str

@@ -13,16 +13,21 @@ class SnowflakeRepository:
         """
         Create and return a Snowflake connection.
         """
-
-        return snowflake.connector.connect(
-            account=settings.SNOWFLAKE_ACCOUNT,
-            user=settings.SNOWFLAKE_USER,
-            password=settings.SNOWFLAKE_PASSWORD,
-            warehouse=settings.SNOWFLAKE_WAREHOUSE,
-            database=settings.SNOWFLAKE_DATABASE,
-            schema=settings.SNOWFLAKE_SCHEMA,
-            role=settings.SNOWFLAKE_ROLE,
-        )
+        try:
+            return snowflake.connector.connect(
+                account=settings.SNOWFLAKE_ACCOUNT,
+                user=settings.SNOWFLAKE_USER,
+                password=settings.SNOWFLAKE_PASSWORD,
+                warehouse=settings.SNOWFLAKE_WAREHOUSE,
+                database=settings.SNOWFLAKE_DATABASE,
+                schema=settings.SNOWFLAKE_SCHEMA,
+                role=settings.SNOWFLAKE_ROLE,
+            )
+        except Exception as exc:
+            # Raise a clearer error so the API logs make it obvious what's missing
+            raise RuntimeError(
+                f"Failed to create Snowflake connection. Check SNOWFLAKE_* env vars. Error: {exc}"
+            ) from exc
 
     # ============================================================
     # HEALTH / READINESS
@@ -122,6 +127,7 @@ class SnowflakeRepository:
         client_id: str | None = None,
         risk_profile: str | None = None,
         status: str | None = None,
+        search: str | None = None,
     ):
         """
         Get paginated portfolios with optional filters.
@@ -143,15 +149,25 @@ class SnowflakeRepository:
                 )
                 filter_params.append(client_id)
 
-            if risk_profile:
+            if search:
+                # Search by portfolio_id or portfolio_name (case-insensitive, partial match)
                 where_conditions.append(
-                    "RISK_PROFILE = %s"
+                    "(LOWER(PORTFOLIO_ID) LIKE LOWER(%s) OR LOWER(PORTFOLIO_NAME) LIKE LOWER(%s))"
+                )
+                like_term = f"%{search}%"
+                filter_params.extend([like_term, like_term])
+
+            if risk_profile:
+                # Use case-insensitive comparison for risk_profile
+                where_conditions.append(
+                    "LOWER(RISK_PROFILE) = LOWER(%s)"
                 )
                 filter_params.append(risk_profile)
 
             if status:
+                # Use case-insensitive comparison for status
                 where_conditions.append(
-                    "STATUS = %s"
+                    "LOWER(STATUS) = LOWER(%s)"
                 )
                 filter_params.append(status)
 
@@ -361,42 +377,89 @@ class SnowflakeRepository:
             connection = self.get_connection()
             cursor = connection.cursor()
 
-            query = """
-                SELECT
-                    PORTFOLIO_ID,
-                    SECURITY_ID,
-                    SECURITY_NAME,
-                    SECTOR,
-                    SECURITY_COUNTRY,
-                    SECURITY_MARKET_VALUE,
-                    SECURITY_ALLOCATION_PERCENT,
-                    SECTOR_ALLOCATION_PERCENT,
-                    COUNTRY_ALLOCATION_PERCENT,
-                    PORTFOLIO_TOTAL_VALUE,
-                    AS_OF_DATE
-                FROM IPRA_DB.ANALYTICS.V_PORTFOLIO_ALLOCATION
-                WHERE PORTFOLIO_ID = %s
-                ORDER BY SECURITY_ID
-            """
+            # Security-level allocation (each security row)
+            if dimension == "security":
+                query = """
+                    SELECT
+                        PORTFOLIO_ID,
+                        SECURITY_ID,
+                        SECURITY_NAME,
+                        SECTOR,
+                        SECURITY_COUNTRY,
+                        SECURITY_MARKET_VALUE,
+                        SECURITY_ALLOCATION_PERCENT,
+                        SECTOR_ALLOCATION_PERCENT,
+                        COUNTRY_ALLOCATION_PERCENT,
+                        PORTFOLIO_TOTAL_VALUE,
+                        AS_OF_DATE
+                    FROM IPRA_DB.ANALYTICS.V_PORTFOLIO_ALLOCATION
+                    WHERE PORTFOLIO_ID = %s
+                    ORDER BY SECURITY_ID
+                """
 
-            cursor.execute(
-                query,
-                (portfolio_id,)
-            )
+                cursor.execute(query, (portfolio_id,))
 
-            rows = cursor.fetchall()
+                rows = cursor.fetchall()
 
-            columns = [
-                column[0].lower()
-                for column in cursor.description
-            ]
+                columns = [column[0].lower() for column in cursor.description]
 
-            items = [
-                dict(zip(columns, row))
-                for row in rows
-            ]
+                items = [dict(zip(columns, row)) for row in rows]
 
-            return items
+                return items
+
+            # Aggregate by sector
+            if dimension == "sector":
+                query = """
+                    SELECT
+                        SECTOR,
+                        SUM(SECURITY_MARKET_VALUE) AS sector_market_value,
+                        CASE WHEN MAX(PORTFOLIO_TOTAL_VALUE) = 0 THEN 0
+                             ELSE (SUM(SECURITY_MARKET_VALUE) / MAX(PORTFOLIO_TOTAL_VALUE)) * 100
+                        END AS sector_allocation_percent,
+                        MAX(PORTFOLIO_TOTAL_VALUE) AS portfolio_total_value,
+                        MAX(AS_OF_DATE) AS as_of_date
+                    FROM IPRA_DB.ANALYTICS.V_PORTFOLIO_ALLOCATION
+                    WHERE PORTFOLIO_ID = %s
+                    GROUP BY SECTOR
+                    ORDER BY sector_market_value DESC
+                """
+
+                cursor.execute(query, (portfolio_id,))
+
+                rows = cursor.fetchall()
+
+                columns = [column[0].lower() for column in cursor.description]
+
+                items = [dict(zip(columns, row)) for row in rows]
+
+                return items
+
+            # Aggregate by country
+            if dimension == "country":
+                query = """
+                    SELECT
+                        SECURITY_COUNTRY,
+                        SUM(SECURITY_MARKET_VALUE) AS country_market_value,
+                        CASE WHEN MAX(PORTFOLIO_TOTAL_VALUE) = 0 THEN 0
+                             ELSE (SUM(SECURITY_MARKET_VALUE) / MAX(PORTFOLIO_TOTAL_VALUE)) * 100
+                        END AS country_allocation_percent,
+                        MAX(PORTFOLIO_TOTAL_VALUE) AS portfolio_total_value,
+                        MAX(AS_OF_DATE) AS as_of_date
+                    FROM IPRA_DB.ANALYTICS.V_PORTFOLIO_ALLOCATION
+                    WHERE PORTFOLIO_ID = %s
+                    GROUP BY SECURITY_COUNTRY
+                    ORDER BY country_market_value DESC
+                """
+
+                cursor.execute(query, (portfolio_id,))
+
+                rows = cursor.fetchall()
+
+                columns = [column[0].lower() for column in cursor.description]
+
+                items = [dict(zip(columns, row)) for row in rows]
+
+                return items
 
         finally:
             if cursor:
@@ -620,6 +683,64 @@ class SnowflakeRepository:
             ]
 
             return dict(zip(columns, row))
+
+        finally:
+            if cursor:
+                cursor.close()
+
+            if connection:
+                connection.close()
+
+    # ============================================================
+    # CLIENTS
+    # ============================================================
+
+    def get_clients(self):
+        """
+        Get a list of clients with portfolio summary information.
+        """
+
+        connection = None
+        cursor = None
+
+        try:
+            connection = self.get_connection()
+            cursor = connection.cursor()
+
+            query = """
+                SELECT
+                    CLIENT_ID,
+                    CLIENT_NAME,
+                    CLIENT_TYPE,
+                    CLIENT_COUNTRY,
+                    CLIENT_RISK_PROFILE,
+                    PORTFOLIO_COUNT,
+                    TOTAL_PORTFOLIO_VALUE,
+                    AVERAGE_RETURN_PERCENT,
+                    HIGH_RISK_PORTFOLIO_COUNT,
+                    MEDIUM_RISK_PORTFOLIO_COUNT,
+                    LOW_RISK_PORTFOLIO_COUNT,
+                    CLIENT_STATUS,
+                    CREATED_DATE
+                FROM IPRA_DB.ANALYTICS.V_CLIENT_PORTFOLIO_SUMMARY
+                ORDER BY CLIENT_ID
+            """
+
+            cursor.execute(query)
+
+            rows = cursor.fetchall()
+
+            columns = [
+                column[0].lower()
+                for column in cursor.description
+            ]
+
+            items = [
+                dict(zip(columns, row))
+                for row in rows
+            ]
+
+            return items
 
         finally:
             if cursor:
