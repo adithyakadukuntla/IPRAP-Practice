@@ -20,6 +20,8 @@ resource "aws_ecs_task_definition" "frontend" {
   network_mode             = "awsvpc"
   cpu                      = var.frontend_cpu
   memory                   = var.frontend_memory
+  execution_role_arn       = var.execution_role_arn != "" ? var.execution_role_arn : null
+  task_role_arn            = var.task_role_arn != "" ? var.task_role_arn : null
 
   container_definitions = jsonencode([
     {
@@ -29,14 +31,6 @@ resource "aws_ecs_task_definition" "frontend" {
       portMappings = [
         { containerPort = var.frontend_container_port, protocol = "tcp" }
       ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = var.frontend_log_group
-          "awslogs-region"        = var.aws_region
-          "awslogs-stream-prefix" = "frontend"
-        }
-      }
     }
   ])
 
@@ -88,6 +82,8 @@ resource "aws_ecs_task_definition" "api" {
   network_mode             = "awsvpc"
   cpu                      = var.api_cpu
   memory                   = var.api_memory
+  execution_role_arn       = var.execution_role_arn != "" ? var.execution_role_arn : null
+  task_role_arn            = var.task_role_arn != "" ? var.task_role_arn : null
 
   container_definitions = jsonencode([
     {
@@ -98,15 +94,6 @@ resource "aws_ecs_task_definition" "api" {
         { containerPort = var.api_container_port, protocol = "tcp" }
       ]
       environment = local.api_env_list
-      secrets     = local.api_secrets_list
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = var.api_log_group
-          "awslogs-region"        = var.aws_region
-          "awslogs-stream-prefix" = "api"
-        }
-      }
     }
   ])
 

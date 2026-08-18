@@ -1,20 +1,19 @@
-# Copy to terraform.tfvars and adjust. Never commit terraform.tfvars if it
-# contains anything sensitive (it shouldn't -- secrets live in Secrets Manager).
+# Copy to terraform.tfvars and fill in.
+# Do NOT commit terraform.tfvars if it ever contains anything sensitive
+# (it shouldn't -- actual secret VALUES live only in Secrets Manager,
+# set via `aws secretsmanager put-secret-value`, never here).
 
-aws_region  = "us-east-1"
+aws_region   = "us-east-1"
 project_name = "ipra"
 environment  = "dev"
 
 azs = ["us-east-1a", "us-east-1b"]
 
-# Set to false to save NAT Gateway cost if the API does not need outbound
-# internet in your training account (e.g. Snowflake reachable via PrivateLink).
-enable_nat_gateway = true
+enable_nat_gateway = true   # API needs outbound access to reach Snowflake
+certificate_arn    = ""     # leave blank for HTTP-only training setup
 
-# Fill in once you have an ACM certificate; leave blank for HTTP-only training setup.
-certificate_arn = ""
-
-# Enable once the GitHub repo is known, for OIDC-based deploys.
-enable_github_oidc = false
-github_org  = "your-org"
-github_repo = "investment-portfolio-risk-analytics"
+# Leave these empty in this lab environment because IAM role creation is blocked.
+# Do not set these to a fake or placeholder ARN unless your lab administrator
+# already provided a valid pre-created role and you deliberately want to use it.
+ecs_execution_role_arn = ""
+ecs_task_role_arn      = ""

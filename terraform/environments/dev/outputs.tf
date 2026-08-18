@@ -1,8 +1,9 @@
-output "vpc_id" { value = module.vpc.vpc_id }
-output "alb_dns_name" { value = module.alb.alb_dns_name }
+output "vpc_id"                      { value = module.vpc.vpc_id }
+output "alb_dns_name"                { value = module.alb.alb_dns_name }
 output "frontend_ecr_repository_url" { value = module.ecr.repository_urls["frontend"] }
-output "api_ecr_repository_url" { value = module.ecr.repository_urls["api"] }
-output "ecs_cluster_name" { value = module.ecs.cluster_name }
-output "frontend_service_name" { value = module.ecs.frontend_service_name }
-output "api_service_name" { value = module.ecs.api_service_name }
-output "cloudwatch_dashboard_name" { value = module.cloudwatch.dashboard_name }
+output "api_ecr_repository_url"      { value = module.ecr.repository_urls["api"] }
+output "ecs_cluster_name"            { value = module.ecs.cluster_name }
+output "frontend_service_name"       { value = module.ecs.frontend_service_name }
+output "api_service_name"            { value = module.ecs.api_service_name }
+output "cloudwatch_dashboard_name"   { value = module.cloudwatch.dashboard_name }
+output "secret_arns"                 { value = module.secrets.secret_arns }
