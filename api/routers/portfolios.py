@@ -25,7 +25,7 @@ def get_portfolios(
     page_size: int = Query(
         default=20,
         ge=1,
-        le=100
+        le=1000
     ),
     client_id: str | None = None,
     risk_profile: str | None = None,
