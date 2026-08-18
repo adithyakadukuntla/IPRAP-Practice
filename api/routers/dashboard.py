@@ -12,12 +12,16 @@ router = APIRouter(
 )
 
 
-@router.get("/kpis", response_model=DashboardKPIs)
-def get_kpis(repository: SnowflakeRepository = Depends(get_repository)):
+def calculate_dashboard_kpis(
+    repository: SnowflakeRepository
+):
     service = PortfolioService(repository)
 
-    # Attempt to retrieve all portfolios in one request (large page_size)
-    result = service.get_portfolios(page=1, page_size=1000)
+    result = service.get_portfolios(
+        page=1,
+        page_size=1000
+    )
+
     items = result.get("items", [])
 
     total_portfolio_value = 0.0
@@ -29,19 +33,34 @@ def get_kpis(repository: SnowflakeRepository = Depends(get_repository)):
 
     for p in items:
         try:
-            total_portfolio_value += float(p.get("current_value") or 0)
-            if p.get("status", "").lower() == "active":
+            total_portfolio_value += float(
+                p.get("current_value") or 0
+            )
+
+            if str(p.get("status", "")).lower() == "active":
                 active_portfolios += 1
-            if p.get("risk_profile", "").lower() == "high":
+
+            if str(p.get("risk_profile", "")).lower() == "high":
                 high_risk_portfolios += 1
+
             if p.get("return_percent") is not None:
-                total_return += float(p.get("return_percent") or 0)
+                total_return += float(
+                    p.get("return_percent") or 0
+                )
                 count_for_return += 1
-            total_holdings += int(p.get("holding_count") or 0)
-        except Exception:
+
+            total_holdings += int(
+                p.get("holding_count") or 0
+            )
+
+        except (ValueError, TypeError):
             continue
 
-    average_return = (total_return / count_for_return) if count_for_return > 0 else 0.0
+    average_return = (
+        total_return / count_for_return
+        if count_for_return > 0
+        else 0.0
+    )
 
     return DashboardKPIs(
         total_portfolio_value=total_portfolio_value,
@@ -50,3 +69,31 @@ def get_kpis(repository: SnowflakeRepository = Depends(get_repository)):
         high_risk_portfolios=high_risk_portfolios,
         total_holdings=total_holdings,
     )
+
+
+# ---------------------------------------------------------
+# /dashboard
+# ---------------------------------------------------------
+
+@router.get(
+    "",
+    response_model=DashboardKPIs
+)
+def get_dashboard(
+    repository: SnowflakeRepository = Depends(get_repository)
+):
+    return calculate_dashboard_kpis(repository)
+
+
+# ---------------------------------------------------------
+# /dashboard/kpis
+# ---------------------------------------------------------
+
+@router.get(
+    "/kpis",
+    response_model=DashboardKPIs
+)
+def get_kpis(
+    repository: SnowflakeRepository = Depends(get_repository)
+):
+    return calculate_dashboard_kpis(repository)
