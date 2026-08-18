@@ -1,0 +1,5 @@
+# Portfolio Measures
+
+1. Portfolio Value
+2. Holding Count
+3. Security Weight %

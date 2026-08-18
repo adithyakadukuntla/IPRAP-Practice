@@ -1,0 +1,38 @@
+{
+  "clients": [
+    {"client_id": "C10001", "name": "Client Alpha", "type": "Institutional", "country": "US", "risk_profile": "High", "status": "Active"},
+    {"client_id": "C10002", "name": "Client Beta", "type": "Individual", "country": "UK", "risk_profile": "Medium", "status": "Active"}
+  ],
+  "portfolios": [
+    {"portfolio_id": "P10001", "client_id": "C10001", "name": "Growth Portfolio", "type": "Growth", "base_currency": "USD", "risk_profile": "High", "initial_value": 1000000, "current_value": 1080000, "status": "Active"},
+    {"portfolio_id": "P10002", "client_id": "C10001", "name": "Balanced Portfolio", "type": "Balanced", "base_currency": "USD", "risk_profile": "Medium", "initial_value": 500000, "current_value": 520000, "status": "Active"},
+    {"portfolio_id": "P10003", "client_id": "C10002", "name": "Conservative Portfolio", "type": "Income", "base_currency": "USD", "risk_profile": "Low", "initial_value": 300000, "current_value": 310000, "status": "Active"},
+    {"portfolio_id": "P10004", "client_id": "C10002", "name": "Single Holding Portfolio", "type": "Growth", "base_currency": "USD", "risk_profile": "High", "initial_value": 200000, "current_value": 210000, "status": "Active"},
+    {"portfolio_id": "P10005", "client_id": "C10001", "name": "Empty Holdings Portfolio", "type": "Growth", "base_currency": "USD", "risk_profile": "Low", "initial_value": 100000, "current_value": 100000, "status": "Active"}
+  ],
+  "securities": [
+    {"security_id": "SEC001", "ticker": "AAPL", "name": "Apple Inc", "type": "Equity", "sector": "Technology", "country": "US", "currency": "USD", "current_price": 200.00, "status": "Active"},
+    {"security_id": "SEC002", "ticker": "MSFT", "name": "Microsoft Corp", "type": "Equity", "sector": "Technology", "country": "US", "currency": "USD", "current_price": 450.00, "status": "Active"},
+    {"security_id": "SEC003", "ticker": "JPM", "name": "JP Morgan", "type": "Equity", "sector": "Financials", "country": "US", "currency": "USD", "current_price": 180.00, "status": "Active"},
+    {"security_id": "SEC004", "ticker": "US10Y", "name": "US 10Y Bond", "type": "Bond", "sector": "Fixed Income", "country": "US", "currency": "USD", "current_price": 100.00, "status": "Active"}
+  ],
+  "holdings": [
+    {"holding_id": "H10001", "portfolio_id": "P10001", "security_id": "SEC001", "quantity": 1000, "purchase_price": 150.00, "current_price": 200.00, "market_value": 200000, "as_of_date": "2026-08-18"},
+    {"holding_id": "H10002", "portfolio_id": "P10001", "security_id": "SEC002", "quantity": 500, "purchase_price": 400.00, "current_price": 450.00, "market_value": 225000, "as_of_date": "2026-08-18"},
+    {"holding_id": "H10003", "portfolio_id": "P10001", "security_id": "SEC003", "quantity": 1000, "purchase_price": 160.00, "current_price": 180.00, "market_value": 180000, "as_of_date": "2026-08-18"},
+    {"holding_id": "H10004", "portfolio_id": "P10001", "security_id": "SEC004", "quantity": 1500, "purchase_price": 95.00, "current_price": 100.00, "market_value": 150000, "as_of_date": "2026-08-18"},
+    {"holding_id": "H10005", "portfolio_id": "P10002", "security_id": "SEC001", "quantity": 200, "purchase_price": 150.00, "current_price": 200.00, "market_value": 40000, "as_of_date": "2026-08-18"},
+    {"holding_id": "H10006", "portfolio_id": "P10003", "security_id": "SEC004", "quantity": 3000, "purchase_price": 95.00, "current_price": 100.00, "market_value": 300000, "as_of_date": "2026-08-18"},
+    {"holding_id": "H10007", "portfolio_id": "P10004", "security_id": "SEC001", "quantity": 1000, "purchase_price": 150.00, "current_price": 200.00, "market_value": 200000, "as_of_date": "2026-08-18"}
+  ],
+  "performance": [
+    {"perf_id": "PERF001", "portfolio_id": "P10001", "as_of_date": "2026-08-18", "beginning_value": 1000000, "ending_value": 1080000, "return_amount": 80000, "return_percent": 8.0},
+    {"perf_id": "PERF002", "portfolio_id": "P10002", "as_of_date": "2026-08-18", "beginning_value": 500000, "ending_value": 520000, "return_amount": 20000, "return_percent": 4.0},
+    {"perf_id": "PERF003", "portfolio_id": "P10003", "as_of_date": "2026-08-18", "beginning_value": 300000, "ending_value": 310000, "return_amount": 10000, "return_percent": 3.33}
+  ],
+  "risk_metrics": [
+    {"risk_id": "RISK001", "portfolio_id": "P10001", "metric_date": "2026-08-18", "concentration_score": 0.40, "sector_concentration": "Technology: 65%, Financials: 17%, Fixed Income: 18%", "geographic_concentration": "US: 100%", "risk_level": "HIGH", "risk_reason": "AAPL concentration at 40% exceeds 25% threshold"},
+    {"risk_id": "RISK002", "portfolio_id": "P10002", "metric_date": "2026-08-18", "concentration_score": 0.15, "sector_concentration": "Technology: 100%", "geographic_concentration": "US: 100%", "risk_level": "MEDIUM", "risk_reason": "Single sector exposure"},
+    {"risk_id": "RISK003", "portfolio_id": "P10003", "metric_date": "2026-08-18", "concentration_score": 0.0, "sector_concentration": "Fixed Income: 100%", "geographic_concentration": "US: 100%", "risk_level": "LOW", "risk_reason": "Bond portfolio, diversified"}
+  ]
+}
