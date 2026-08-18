@@ -25,7 +25,7 @@ def get_holdings(
     page_size: int = Query(
         default=20,
         ge=1,
-        le=100
+        le=1000
     ),
     repository: SnowflakeRepository = Depends(get_repository)
 ):
