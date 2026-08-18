@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from api.services.holding_service import HoldingsService
+from api.services.holding_service import HoldingService
 
 
 def test_get_holdings():
@@ -14,7 +14,7 @@ def test_get_holdings():
         "total_pages": 0,
     }
 
-    service = HoldingsService(repository)
+    service = HoldingService(repository)
 
     result = service.get_holdings(
         portfolio_id="P10001",
@@ -38,7 +38,7 @@ def test_get_holdings_passes_parameters():
         "total_pages": 2,
     }
 
-    service = HoldingsService(repository)
+    service = HoldingService(repository)
 
     service.get_holdings(
         portfolio_id="P10001",
@@ -64,7 +64,7 @@ def test_empty_holdings():
         "total_pages": 0,
     }
 
-    service = HoldingsService(repository)
+    service = HoldingService(repository)
 
     result = service.get_holdings(
         portfolio_id="P10001",
