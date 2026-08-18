@@ -1,4 +1,4 @@
-# Uncomment and fill in once an approved S3 backend + DynamoDB lock table exist.
+# Uncomment once an approved S3 backend + DynamoDB lock table exist.
 #
 # terraform {
 #   backend "s3" {
