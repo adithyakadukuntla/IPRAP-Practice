@@ -3,7 +3,7 @@ TC-API-022 to TC-API-026: Allocation API Tests
 Requirements: Section 15-17 - Allocation Endpoints
 """
 
-from test_case_template import TestCase, TEST_STATUS
+from tests.api.test_case_template import TestCase, TEST_STATUS
 
 
 class TC_API_022_GetAllocation(TestCase):

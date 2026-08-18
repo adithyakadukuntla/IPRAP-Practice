@@ -3,7 +3,7 @@ TC-API-002 to TC-API-006
 API Contract & Response Validation
 """
 
-from test_case_template import TestCase, TEST_STATUS
+from tests.api.test_case_template import TestCase, TEST_STATUS
 
 
 class TC_API_002_GetPortfolio(TestCase):

@@ -4,7 +4,7 @@ Requirements: Section 15 - API Mandatory Scenarios
 """
 
 import time
-from test_case_template import TestCase, TEST_STATUS
+from tests.api.test_case_template import TestCase, TEST_STATUS
 
 
 class TC_API_001(TestCase):

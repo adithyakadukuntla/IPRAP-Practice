@@ -6,7 +6,7 @@ import requests
 from typing import Dict, Any
 
 # Load test data
-TEST_DATA_PATH = Path(__file__).parent.parent.parent / "test-cases" / "test_data.json"
+TEST_DATA_PATH = Path(__file__).parent.parent.parent / "tests" / "test-cases" / "test_data.json"
 
 @pytest.fixture(scope="session")
 def test_data():
