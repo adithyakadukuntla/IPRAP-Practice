@@ -28,7 +28,7 @@ variable "private_subnet_cidrs" {
 }
 variable "enable_nat_gateway" {
   type    = bool
-  default = true # required in dev because API tasks need outbound access to Snowflake
+  default = true
 }
 
 variable "frontend_cpu" {
@@ -48,9 +48,6 @@ variable "api_memory" {
   default = 512
 }
 
-# Images default to a harmless placeholder so `terraform apply` can run
-# before the very first image has been pushed to ECR. CI/CD overwrites the
-# running task definition afterwards (see ecs_service lifecycle.ignore_changes).
 variable "frontend_image_placeholder" {
   type    = string
   default = "public.ecr.aws/nginx/nginx:latest"
@@ -65,17 +62,23 @@ variable "certificate_arn" {
   default = ""
 }
 
-variable "enable_github_oidc" {
-  type    = bool
-  default = false
+# ---------------------------------------------------------------------------
+# IAM ROLES ARE NOT CREATED BY TERRAFORM IN THIS LAB.
+# The lab account blocks iam:CreateRole / iam:PutRolePolicy even for the
+# provided root/admin credentials. Paste the ARNs of the roles the lab has
+# already pre-created for you (ask your lab provider if you don't have them
+# yet -- see docs/iam-lab-constraints.md for exactly what each role needs).
+# ---------------------------------------------------------------------------
+variable "ecs_execution_role_arn" {
+  type        = string
+  description = "Optional ECS task EXECUTION role ARN. Leave blank for this lab setup because IAM role creation is blocked."
+  default     = ""
 }
-variable "github_org" {
-  type    = string
-  default = ""
-}
-variable "github_repo" {
-  type    = string
-  default = ""
+
+variable "ecs_task_role_arn" {
+  type        = string
+  description = "Optional ECS TASK role ARN. Leave blank for this lab setup because IAM role creation is blocked."
+  default     = ""
 }
 
 variable "alarm_sns_topic_arn" {

@@ -8,10 +8,7 @@ terraform {
     }
   }
 
-  # Remote state recommended (see backend.tf). If unavailable in the training
-  # account, local state is used as a documented exception -- never commit
-  # terraform.tfstate to Git (see .gitignore).
-  # backend "s3" {}
+  # backend "s3" {}   # uncomment once an approved remote state bucket exists
 }
 
 provider "aws" {

@@ -56,18 +56,13 @@ variable "api_desired_count" {
   default = 1
 }
 variable "execution_role_arn" {
-  type        = string
-  description = "Optional ECS task execution role ARN. Not created by Terraform in restricted training accounts."
-  default     = null
+  type    = string
+  default = ""
 }
-
 variable "task_role_arn" {
-  type        = string
-  description = "Optional ECS task role ARN. Not created by Terraform in restricted training accounts."
-  default     = null
+  type    = string
+  default = ""
 }
-
-
 variable "frontend_log_group" {
   type = string
 }
