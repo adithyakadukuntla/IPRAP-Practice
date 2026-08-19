@@ -12,11 +12,19 @@ class HoldingService:
         page: int = 1,
         page_size: int = 20,
     ):
-        items, total_items = self.repository.get_holdings(
+        result = self.repository.get_holdings(
             portfolio_id=portfolio_id,
             page=page,
             page_size=page_size,
         )
+
+        # Repository already returns a paginated dictionary
+        if isinstance(result, dict):
+            return result
+
+        # Backward-compatible handling if repository returns
+        # (items, total_items)
+        items, total_items = result
 
         total_pages = (
             (total_items + page_size - 1) // page_size

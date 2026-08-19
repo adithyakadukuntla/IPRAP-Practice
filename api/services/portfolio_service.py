@@ -13,12 +13,12 @@ class PortfolioService:
         self,
         page: int = 1,
         page_size: int = 20,
-        client_id: str | None = None,
-        risk_profile: str | None = None,
-        status: str | None = None,
-        search: str | None = None,
+        client_id=None,
+        risk_profile=None,
+        status=None,
+        search=None,
     ):
-        items, total_items = self.repository.get_portfolios(
+        result = self.repository.get_portfolios(
             page=page,
             page_size=page_size,
             client_id=client_id,
@@ -26,6 +26,13 @@ class PortfolioService:
             status=status,
             search=search,
         )
+
+        if isinstance(result, tuple):
+            items = result[0]
+            total_items = result[-1]
+        else:
+            items = result
+            total_items = len(items)
 
         total_pages = (
             (total_items + page_size - 1) // page_size
