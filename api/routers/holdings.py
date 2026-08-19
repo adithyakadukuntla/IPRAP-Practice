@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from dependencies import get_repository
 from repositories.snowflake_repository import SnowflakeRepository
-from schemas.holding import HoldingListResponse
 from services.holding_service import HoldingService
-
+from services.portfolio_service import PortfolioService
+from schemas.holding import HoldingListResponse
 
 router = APIRouter(
     prefix="/api/v1/portfolios",
@@ -29,10 +29,28 @@ def get_holdings(
     ),
     repository: SnowflakeRepository = Depends(get_repository)
 ):
-    service = HoldingService(repository)
 
-    return service.get_holdings(
+    portfolio_service = PortfolioService(repository)
+
+    portfolio = portfolio_service.get_portfolio(
+        portfolio_id
+    )
+
+    if portfolio is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "code": "PORTFOLIO_NOT_FOUND",
+                "message": (
+                    f"Portfolio {portfolio_id} was not found"
+                )
+            }
+        )
+
+    holding_service = HoldingService(repository)
+
+    return holding_service.get_holdings(
         portfolio_id=portfolio_id,
         page=page,
-        page_size=page_size,
+        page_size=page_size
     )
