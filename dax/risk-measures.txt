@@ -1,0 +1,7 @@
+# Risk Measures
+
+1. Risk Score
+2. Concentration
+3. Sector Exposure
+4. Geographic Exposure
+5. Risk Classification

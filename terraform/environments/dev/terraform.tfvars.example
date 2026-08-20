@@ -1,0 +1,19 @@
+# Copy to terraform.tfvars and fill in.
+# Do NOT commit terraform.tfvars if it ever contains anything sensitive
+# (it shouldn't -- actual secret VALUES live only in Secrets Manager,
+# set via `aws secretsmanager put-secret-value`, never here).
+
+aws_region   = "us-east-1"
+project_name = "ipra"
+environment  = "dev"
+
+azs = ["us-east-1a", "us-east-1b"]
+
+enable_nat_gateway = true   # API needs outbound access to reach Snowflake
+certificate_arn    = ""     # leave blank for HTTP-only training setup
+
+# Leave these empty in this lab environment because IAM role creation is blocked.
+# Do not set these to a fake or placeholder ARN unless your lab administrator
+# already provided a valid pre-created role and you deliberately want to use it.
+ecs_execution_role_arn = ""
+ecs_task_role_arn      = ""

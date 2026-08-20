@@ -16,8 +16,8 @@ export const holdingApi = {
     }
 
     const response = await apiClient.get(`/portfolios/${portfolioId}/holdings`, { params });
-    const data: any = response.data || {};
-    const items = data?.items ?? [];
+    const data:any = response.data;
+    const items:any = data?.items ?? [];
 
     const map = (h: any): Holding => ({
       id: h.holding_id || h.id,

@@ -78,6 +78,8 @@ export const AllocationPage: React.FC = () => {
     );
   }
 
+  // const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+
   return (
     <div className="bg-slate-50/70 py-8">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">

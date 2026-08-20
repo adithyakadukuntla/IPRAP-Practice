@@ -1,0 +1,6 @@
+# Validation Measures
+
+1. Power BI vs Snowflake Portfolio Value
+2. Power BI vs Snowflake Holding Count
+3. Power BI vs Snowflake Return
+4. Power BI vs Snowflake Risk Metrics
