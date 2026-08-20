@@ -59,8 +59,11 @@
 
 
 import React, { useEffect, useState } from 'react';
+import { ArrowUpRight, BriefcaseBusiness } from 'lucide-react';
 import { useParams, Link } from 'react-router-dom';
 import { portfolioApi } from '../services/api/portfolioApi';
+import { RiskBadge } from '../components/common/RiskBadge';
+import { formatCurrency, formatPercentage } from '../utils/formatters';
 import type { Portfolio } from '../types';
 
 export const ClientPortfoliosPage: React.FC = () => {
@@ -159,10 +162,10 @@ export const ClientPortfoliosPage: React.FC = () => {
                   View details
                 </Link>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

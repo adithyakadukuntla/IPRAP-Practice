@@ -60,39 +60,40 @@ export const PerformancePage: React.FC = () => {
   const earliestData = performance && performance.length > 0 ? performance[0] : null;
 
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-slate-50/70 py-8">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-4">
           <button
             onClick={() => navigate(`/portfolios/${portfolioId}`)}
-            className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Performance</h1>
-            <p className="mt-2 text-gray-600">{portfolio?.name}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Performance</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">Performance</h1>
+            <p className="mt-1 text-sm text-slate-500">{portfolio?.name}</p>
           </div>
         </div>
 
         {/* Performance Summary Cards */}
         {latestData && earliestData && (
           <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="glass-card rounded-2xl p-6">
               <p className="text-sm font-medium text-gray-600">Beginning Value</p>
               <p className="mt-2 text-3xl font-bold text-gray-900">
                 {formatCurrency(earliestData.portfolioValue, portfolio?.baseCurrency)}
               </p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="glass-card rounded-2xl p-6">
               <p className="text-sm font-medium text-gray-600">Ending Value</p>
               <p className="mt-2 text-3xl font-bold text-gray-900">
                 {formatCurrency(latestData.portfolioValue, portfolio?.baseCurrency)}
               </p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="glass-card rounded-2xl p-6">
               <p className="text-sm font-medium text-gray-600">Total Return</p>
               <p
                 className={`mt-2 text-3xl font-bold ${
@@ -109,7 +110,7 @@ export const PerformancePage: React.FC = () => {
         {performance && performance.length > 0 ? (
           <>
             {/* Portfolio Value Chart */}
-            <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="glass-card mb-6 rounded-2xl p-6">
               <h3 className="mb-4 text-lg font-semibold text-gray-900">Portfolio Value Over Time</h3>
               <ResponsiveContainer width="100%" height={400}>
                 <AreaChart data={performance}>
@@ -139,7 +140,7 @@ export const PerformancePage: React.FC = () => {
             </div>
 
             {/* Combined Chart: Value and Return */}
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="glass-card rounded-2xl p-6">
               <h3 className="mb-4 text-lg font-semibold text-gray-900">Value & Return Performance</h3>
               <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart data={performance}>

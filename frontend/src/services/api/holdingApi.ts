@@ -47,7 +47,7 @@ export const holdingApi = {
     }
 
     const response = await apiClient.get(`/portfolios/${portfolioId}/holdings/${holdingId}`);
-    const h:any = response.data;
+    const h: any = response.data;
     if (!h) throw new Error('Holding not found');
 
     return {

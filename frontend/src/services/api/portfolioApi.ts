@@ -9,6 +9,8 @@ export const portfolioApi = {
   async getPortfolios(params?: {
     page?: number;
     limit?: number;
+    page_size?: number;
+    client_id?: string;
     search?: string;
     riskProfile?: string;
     status?: string;
@@ -73,7 +75,7 @@ export const portfolioApi = {
     const response = await apiClient.get('/portfolios', { params: cleanParams });
 
     // Backend returns a paginated response { items, page, page_size, total_items, total_pages }
-    const data:any = response.data;
+    const data: any = response.data || {};
     const items = data?.items ?? [];
 
     // Map backend snake_case fields to frontend camelCase `Portfolio` shape
@@ -107,7 +109,7 @@ export const portfolioApi = {
     }
 
     const response = await apiClient.get(`/portfolios/${portfolioId}`);
-    const p:any = response.data;
+    const p: any = response.data;
     if (!p) throw new Error('Portfolio not found');
 
     return {
@@ -134,7 +136,7 @@ export const portfolioApi = {
     }
 
     const response = await apiClient.get('/dashboard/kpis');
-    const d:any = response.data || {};
+    const d: any = response.data || {};
 
     return {
       totalPortfolioValue: d.total_portfolio_value ?? d.totalPortfolioValue ?? 0,

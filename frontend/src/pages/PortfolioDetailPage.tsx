@@ -62,10 +62,10 @@ export const PortfolioDetailPage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-slate-50/70 py-8">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header with Back Button */}
-        <div className="mb-8 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-4">
           <button
             onClick={() => {
               try {
@@ -78,14 +78,15 @@ export const PortfolioDetailPage: React.FC = () => {
                 navigate('/portfolios');
               }
             }}
-            className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{portfolio.name}</h1>
-            <p className="mt-2 text-gray-600">Portfolio ID: {portfolio.id}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Portfolio overview</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">{portfolio.name}</h1>
+            <p className="mt-1 text-sm text-slate-500">Portfolio ID: {portfolio.id}</p>
           </div>
         </div>
 
@@ -95,17 +96,20 @@ export const PortfolioDetailPage: React.FC = () => {
             title="Current Value"
             value={formatCurrency(portfolio.currentValue, portfolio.baseCurrency)}
             subtitle={portfolio.baseCurrency}
+            wide
           />
           <KPICard
             title="Initial Value"
             value={formatCurrency(portfolio.initialValue, portfolio.baseCurrency)}
             subtitle={portfolio.baseCurrency}
+            wide
           />
           <KPICard
             title="Total Return"
             value={formatCurrency(portfolio.return, portfolio.baseCurrency)}
             subtitle={formatPercentage(portfolio.returnPercentage)}
             trend={{ value: portfolio.returnPercentage, direction: portfolio.returnPercentage >= 0 ? 'up' : 'down' }}
+            wide
           />
           <KPICard
             title="Risk Profile"
@@ -120,8 +124,8 @@ export const PortfolioDetailPage: React.FC = () => {
         </div>
 
         {/* Portfolio Details Grid */}
-        <div className="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-6 text-lg font-semibold text-gray-900">Portfolio Details</h2>
+        <div className="glass-card mb-8 rounded-2xl p-6">
+          <h2 className="mb-6 text-lg font-semibold text-slate-900">Portfolio Details</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             <div>
               <p className="text-sm font-medium text-gray-600">Portfolio Type</p>
@@ -145,9 +149,9 @@ export const PortfolioDetailPage: React.FC = () => {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
-          <div className="border-b border-gray-200">
-            <nav className="flex flex-wrap gap-4 px-6" aria-label="Tabs">
+        <div className="glass-card overflow-hidden rounded-2xl">
+          <div className="border-b border-slate-200/80 bg-white/50">
+            <nav className="flex flex-wrap gap-2 px-5" aria-label="Tabs">
               {tabs.map((tab, idx) => (
                 <button
                   key={idx}
@@ -156,10 +160,10 @@ export const PortfolioDetailPage: React.FC = () => {
                       navigate(tab.href);
                     }
                   }}
-                  className={`flex items-center gap-2 border-b-2 py-4 px-1 text-sm font-medium ${
+                  className={`flex items-center gap-2 rounded-t-xl border-b-2 px-3 py-3.5 text-sm font-medium transition ${
                     tab.href === '#'
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-600 hover:border-gray-300 hover:text-gray-900'
+                      ? 'border-sky-600 text-sky-700 bg-sky-50/80'
+                      : 'border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-900'
                   }`}
                 >
                   {tab.label}

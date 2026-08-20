@@ -34,7 +34,7 @@ export const clientApi = {
     }
 
     const response = await apiClient.get(`/clients/${clientId}`);
-    const c:any = response.data;
+    const c: any = response.data;
     if (!c) throw new Error('Client not found');
 
     return {
