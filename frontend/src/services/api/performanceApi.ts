@@ -15,7 +15,7 @@ export const performanceApi = {
     }
 
     const response = await apiClient.get(`/portfolios/${portfolioId}/performance`, { params });
-    const data = response.data;
+    const data: any = response.data || {};
     const items = data?.items ?? [];
 
     // Map backend performance fields to frontend `PerformanceData`

@@ -12,7 +12,7 @@ export const clientApi = {
     }
 
     const response = await apiClient.get('/clients');
-    const data = response.data || [];
+    const data: any = response.data || [];
 
     // Map backend fields to frontend Client type
     return (data || []).map((c: any) => ({
@@ -34,7 +34,7 @@ export const clientApi = {
     }
 
     const response = await apiClient.get(`/clients/${clientId}`);
-    const c = response.data;
+    const c: any = response.data;
     if (!c) throw new Error('Client not found');
 
     return {

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAsync } from '../hooks/useAsync';
 import { allocationApi } from '../services/api/allocationApi';
@@ -9,18 +9,6 @@ import { EmptyState } from '../components/common/EmptyState';
 import { DataTable } from '../components/common/DataTable';
 import type { TableColumn } from '../components/common/DataTable';
 import { formatCurrency, formatPercentage, formatDate } from '../utils/formatters';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
 import { ArrowLeft } from 'lucide-react';
 
 interface AllocationItem {
@@ -90,41 +78,41 @@ export const AllocationPage: React.FC = () => {
     );
   }
 
-  const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
-
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-slate-50/70 py-8">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-4">
           <button
             onClick={() => navigate(`/portfolios/${portfolioId}`)}
-            className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Asset Allocation</h1>
-            <p className="mt-2 text-gray-600">{portfolio?.name}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Allocation</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">Asset Allocation</h1>
+            <p className="mt-1 text-sm text-slate-500">{portfolio?.name}</p>
           </div>
         </div>
 
-        {/* Dimension Selector */}
-        <div className="mb-6 flex gap-4">
-          {(['sector', 'security', 'country'] as const).map((dim) => (
-            <button
-              key={dim}
-              onClick={() => setDimension(dim)}
-              className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                dimension === dim
-                  ? 'bg-primary-600 text-white'
-                  : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              By {dim.charAt(0).toUpperCase() + dim.slice(1)}
-            </button>
-          ))}
+        <div className="glass-card mb-6 rounded-2xl p-4">
+          <div className="flex flex-wrap gap-3">
+            {(['sector', 'security', 'country'] as const).map((dim) => (
+              <button
+                key={dim}
+                onClick={() => setDimension(dim)}
+                className={`rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${
+                  dimension === dim
+                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20'
+                    : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                By {dim.charAt(0).toUpperCase() + dim.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Charts - Disabled due to Recharts re-render issues, table below shows data */}
@@ -133,10 +121,10 @@ export const AllocationPage: React.FC = () => {
             {/* Hidden charts for now - keeping for future Recharts upgrade */}
 
             {/* Allocation Table */}
-            <div className="rounded-lg bg-white shadow-sm">
-              <div className="border-b border-gray-200 px-6 py-4">
-                <h3 className="text-lg font-semibold text-gray-900">Detailed Allocation ({dimension})</h3>
-                <p className="mt-1 text-sm text-gray-600">As of {formatDate(allocation.asOfDate)}</p>
+            <div className="glass-card overflow-hidden rounded-2xl">
+              <div className="border-b border-slate-200/80 bg-white/60 px-6 py-4">
+                <h3 className="text-lg font-semibold text-slate-900">Detailed Allocation ({dimension})</h3>
+                <p className="mt-1 text-sm text-slate-600">As of {formatDate(allocation.asOfDate)}</p>
               </div>
               <DataTable
                 columns={columns}

@@ -26,7 +26,7 @@ export const allocationApi = {
     }
 
     const response = await apiClient.get(`/portfolios/${portfolioId}/allocation`, { params });
-    const data = response.data || { items: [], dimension: params?.dimension || 'sector' };
+    const data: any = response.data || { items: [], dimension: params?.dimension || 'sector' };
 
     // Map backend allocation items into frontend-friendly shape and handle aggregated field names
     const mappedItems = (data.items || []).map((it: any) => {

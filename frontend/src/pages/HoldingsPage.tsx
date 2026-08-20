@@ -91,26 +91,27 @@ export const HoldingsPage: React.FC = () => {
   const totalMarketValue = holdings?.reduce((sum, h) => sum + h.marketValue, 0) || 0;
 
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-slate-50/70 py-8">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-4">
           <button
             onClick={() => navigate(`/portfolios/${portfolioId}`)}
-            className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Holdings</h1>
-            <p className="mt-2 text-gray-600">{portfolio?.name}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Portfolio holdings</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">Holdings</h1>
+            <p className="mt-1 text-sm text-slate-500">{portfolio?.name}</p>
           </div>
         </div>
 
         {/* Summary Card */}
         <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="glass-card rounded-2xl p-6">
             <p className="text-sm font-medium text-gray-600">Total Holdings</p>
             <p className="mt-2 text-3xl font-bold text-gray-900">{holdings?.length || 0}</p>
           </div>
@@ -132,7 +133,7 @@ export const HoldingsPage: React.FC = () => {
 
         {/* Table */}
         {holdings && holdings.length > 0 ? (
-          <div className="rounded-lg bg-white shadow-sm">
+          <div className="glass-card overflow-hidden rounded-2xl">
             <DataTable
               columns={columns}
               data={holdings}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { TrendingUp, Menu, X } from 'lucide-react';
+import { BarChart3, Menu, ShieldCheck, X } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -13,28 +13,37 @@ export const Header: React.FC = () => {
   ];
 
   const isActive = (path: string) => {
-    return location.pathname === path || location.pathname.startsWith(path);
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+
+    return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
 
   return (
-    <header className="border-b border-gray-200 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-slate-950/90 shadow-[0_12px_30px_rgba(15,23,42,0.18)] backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <TrendingUp className="h-8 w-8 text-primary-600" />
-          <span className="text-xl font-bold text-gray-900">Investment Analytics</span>
+        <Link to="/" className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-cyan-400 to-indigo-600 shadow-lg shadow-blue-500/30 ring-2 ring-white/10">
+            <BarChart3 className="h-5 w-5 text-white" />
+          </div>
+          <div className="leading-none">
+            <div className="text-[0.7rem] font-semibold uppercase tracking-[0.34em] text-blue-200/90">
+              Portfolio
+            </div>
+            <div className="mt-1 text-xl font-black tracking-tight text-white">IPRAP</div>
+          </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden flex-1 items-center gap-8 md:flex md:ml-8">
+        <div className="hidden flex-1 items-center justify-center gap-2 md:flex md:pl-10">
           {navItems.map((item) => (
             <Link
               key={item.href}
               to={item.href}
-              className={`text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                 isActive(item.href)
-                  ? 'text-primary-600 border-b-2 border-primary-600 pb-2'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-white text-slate-900 shadow-md shadow-slate-900/10'
+                  : 'text-slate-200 hover:bg-slate-800 hover:text-white'
               }`}
             >
               {item.label}
@@ -42,31 +51,33 @@ export const Header: React.FC = () => {
           ))}
         </div>
 
-        {/* Mobile menu button */}
+        <div className="hidden items-center gap-3 md:flex">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-100">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            Secure
+          </div>
+        </div>
+
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900 p-2 text-slate-200 transition hover:border-slate-500 hover:text-white md:hidden"
+          aria-label="Toggle navigation"
         >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
 
-      {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="border-t border-gray-200 bg-white md:hidden">
-          <div className="space-y-1 px-2 pt-2 pb-3">
+        <div className="border-t border-slate-800 bg-slate-950/95 md:hidden">
+          <div className="space-y-1 px-3 py-3">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block rounded-xl px-3 py-2.5 text-base font-medium ${
                   isActive(item.href)
-                    ? 'bg-primary-50 text-primary-700'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-white text-slate-900'
+                    : 'text-slate-200 hover:bg-slate-800 hover:text-white'
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
