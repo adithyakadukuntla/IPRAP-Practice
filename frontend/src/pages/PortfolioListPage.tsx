@@ -112,16 +112,21 @@ export const PortfolioListPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-slate-50/70 py-8">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Portfolios</h1>
-          <p className="mt-2 text-gray-600">Manage and analyze all portfolios</p>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Portfolio universe</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">Portfolios</h1>
+          </div>
+          <div className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 text-sm font-medium text-sky-700">
+            {portfolios?.length || 0} tracked
+          </div>
         </div>
 
         {/* Filters */}
-        <div className="mb-6 grid grid-cols-1 gap-4 rounded-lg border border-gray-200 bg-white p-6 md:grid-cols-4">
+        <div className="glass-card mb-6 grid grid-cols-1 gap-4 rounded-2xl p-5 md:grid-cols-4">
           {/* Search */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Search</label>
@@ -191,7 +196,7 @@ export const PortfolioListPage: React.FC = () => {
 
         {/* Table */}
         {portfolios && portfolios.length > 0 ? (
-          <div className="rounded-lg bg-white shadow-sm">
+          <div className="glass-card overflow-hidden rounded-2xl">
             <DataTable
               columns={columns}
               data={portfolios}

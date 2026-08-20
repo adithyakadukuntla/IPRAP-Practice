@@ -87,22 +87,26 @@ export const DashboardPage: React.FC = () => {
   const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-2 text-gray-600">Welcome to the Investment Analytics Platform</p>
+    <div className="py-6 md:py-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-blue-600">Overview</p>
+            <h1 className="mt-2 text-4xl font-black tracking-tight text-slate-900">Dashboard</h1>
+          </div>
+          <div className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm">
+            Investment Analytics Platform
+          </div>
         </div>
 
-        {/* KPI Cards */}
-        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
           {kpis && (
             <>
               <KPICard
                 title="Total Portfolio Value"
                 value={formatCurrency(kpis.totalPortfolioValue)}
                 icon={DollarSign}
+                wide
               />
               <KPICard
                 title="Active Portfolios"
@@ -129,26 +133,33 @@ export const DashboardPage: React.FC = () => {
           )}
         </div>
 
-        {/* Charts Grid */}
         {portfolios && portfolios.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {/* Portfolio Value Chart */}
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Portfolio Value</h3>
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <div className="glass-card rounded-[1.75rem] p-5 md:p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900">Portfolio Value</h3>
+                <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-700">
+                  Value
+                </span>
+              </div>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={portfolioValueData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
-                  <YAxis />
-                  <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                  <Bar dataKey="value" fill="#0ea5e9" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" vertical={false} />
+                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fill: '#475569', fontSize: 12 }} />
+                  <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
+                  <Tooltip formatter={(value) => formatCurrency(value as number)} contentStyle={{ borderRadius: 14, border: '1px solid #dbeafe' }} />
+                  <Bar dataKey="value" fill="#2563eb" radius={[10, 10, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Risk Profile Distribution */}
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Risk Profile Distribution</h3>
+            <div className="glass-card rounded-[1.75rem] p-5 md:p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900">Risk Profile Distribution</h3>
+                <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-violet-700">
+                  Mix
+                </span>
+              </div>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -170,22 +181,27 @@ export const DashboardPage: React.FC = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Portfolio Returns */}
-            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm lg:col-span-2">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Portfolio Returns</h3>
+            <div className="glass-card rounded-[1.75rem] p-5 md:p-6 xl:col-span-2">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900">Portfolio Returns</h3>
+                <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-700">
+                  Returns
+                </span>
+              </div>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={returnData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => `${value}%`} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fill: '#475569', fontSize: 12 }} />
+                  <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
+                  <Tooltip formatter={(value) => `${value}%`} contentStyle={{ borderRadius: 14, border: '1px solid #dbeafe' }} />
                   <Legend />
                   <Line
                     type="monotone"
                     dataKey="return"
                     stroke="#0ea5e9"
-                    strokeWidth={2}
-                    dot={{ fill: '#0ea5e9' }}
+                    strokeWidth={3}
+                    dot={{ fill: '#0ea5e9', r: 4 }}
+                    activeDot={{ r: 7 }}
                     name="Return %"
                   />
                 </LineChart>

@@ -62,26 +62,27 @@ export const RiskPage: React.FC = () => {
   const COLORS = ['#ef4444', '#e5e7eb'];
 
   return (
-    <div className="bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-slate-50/70 py-8">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-4">
           <button
             onClick={() => navigate(`/portfolios/${portfolioId}`)}
-            className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Risk Analytics</h1>
-            <p className="mt-2 text-gray-600">{portfolio?.name}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Risk</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">Risk Analytics</h1>
+            <p className="mt-1 text-sm text-slate-500">{portfolio?.name}</p>
           </div>
         </div>
 
         {/* Risk Status Alert */}
         <div
-          className={`mb-6 rounded-lg border p-6 ${
+          className={`glass-card mb-6 rounded-2xl border p-6 ${
             riskData.riskStatus === 'low'
               ? 'border-green-200 bg-green-50'
               : riskData.riskStatus === 'medium'
@@ -124,7 +125,7 @@ export const RiskPage: React.FC = () => {
 
         {/* Risk KPIs */}
         <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-2">
               <Gauge className="h-5 w-5 text-primary-500" />
               <p className="text-sm font-medium text-gray-600">Risk Profile</p>
@@ -155,7 +156,7 @@ export const RiskPage: React.FC = () => {
             <p className="mt-2 text-sm text-gray-600">Single security weight</p>
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="glass-card rounded-2xl p-6">
             <p className="text-sm font-medium text-gray-600">Overall Risk Status</p>
             <p className="mt-3">
               <RiskBadge level={riskData.riskStatus} />
@@ -173,7 +174,7 @@ export const RiskPage: React.FC = () => {
         {/* Risk Visualization */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Concentration Chart */}
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="glass-card rounded-2xl p-6">
             <h3 className="mb-4 text-lg font-semibold text-gray-900">Portfolio Concentration</h3>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -197,7 +198,7 @@ export const RiskPage: React.FC = () => {
           </div>
 
           {/* Risk Metrics */}
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="glass-card rounded-2xl p-6">
             <h3 className="mb-4 text-lg font-semibold text-gray-900">Risk Metrics Overview</h3>
             <div className="space-y-4">
               <div>
